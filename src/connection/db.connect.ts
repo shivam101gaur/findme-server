@@ -13,12 +13,19 @@ class DatabaseConnect {
 
     private _connect() {
 
-        mongoose.connect(this.cloud_uri).then((res) => {
-            console.log(chalk.yellow.italic('\n\t  --- Database Connection Successful --- \n'));
-        }).catch(err => {
-            console.log(chalk.red.inverse('\n*** Database connection error '))
-            console.log(err)
-        })
+        mongoose.connect(this.cloud_uri,
+            {
+                useNewUrlParser: true,
+                useFindAndModify: false,
+                useUnifiedTopology: true,
+                useCreateIndex: true
+            })
+            .then((res) => {
+                console.log(chalk.yellow.italic('\n\t  --- Database Connection Successful --- \n'));
+            }).catch(err => {
+                console.log(chalk.red.inverse('\n*** Database connection error '))
+                console.log(err)
+            })
     }
 
 

@@ -52,11 +52,22 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-    res.send(`user with id = ${req.params.id} could not be updated`)
+
+    UserController.findByIdAndUpdate(req.params.id,req.body, {new: true}).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+        res.send(err)
+    });
 })
 
 router.delete('/:id', (req, res) => {
-    res.send(`user with id = ${req.params.id} could not be deleted`)
+
+    UserController.findByIdAndDelete(req.params.id,{new:true}).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+         res.send(`user with id = ${req.params.id} could not be deleted${err}`)
+    });
+   
 })
 
 

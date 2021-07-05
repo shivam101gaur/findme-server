@@ -1,5 +1,5 @@
 import express from "express";
-import  { db_connection  }  from "./connection/db.connect"
+import { db_connection } from "./connection/db.connect"
 import { userRouter } from "./routes/user.route";
 import chalk from "chalk";
 
@@ -9,15 +9,14 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/users',userRouter)
-
-
+app.use('/users', userRouter)
 
 
-
-
+app.get('/', (req, res) => {
+    res.send(`<h2><a href="./users">users</a></h2>`)
+})
 
 app.get('*', (req, res) => {
     res.send(`<div style="display:flex;justify-content:center;align-items:center;height:100%;width:100%">
