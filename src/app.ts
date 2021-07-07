@@ -2,10 +2,12 @@ import express from "express";
 import { db_connection } from "./connection/db.connect"
 import { userRouter } from "./routes/user.route";
 import chalk from "chalk";
+import cors from "cors"
 
 
 db_connection;
 const app = express();
+app.use(cors());
 
 // middleware
 app.use(express.json());
