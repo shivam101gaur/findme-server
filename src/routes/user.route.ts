@@ -5,7 +5,8 @@ import { build_user, IUser, UserController } from "../models/user.model";
 const router = express.Router();
 
 
-//get all users
+//get all users 
+
 router.get('/', (req, res) => {
 
     UserController.find()
