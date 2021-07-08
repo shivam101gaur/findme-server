@@ -9,8 +9,7 @@ export interface IUser {
 
 const userSchema = new mongoose.Schema({
 
-   
-    name: String,
+    name: { type: String, unique: true, required: true , dropDups: true  },
     password: String
 
 });
@@ -22,4 +21,4 @@ const UserController = mongoose.model("user", userSchema);
 
 
 
-export { build_user , UserController }
+export { build_user, UserController }
