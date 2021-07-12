@@ -40,12 +40,14 @@ router.post('/', (req, res) => {
 
    
     // var world = { name, password, created_by, members }
-    var world: IWorld = req.body;
+    const world: IWorld = req.body;
 
     if (!(world?.members)) {
         world.members = []
     }
     if (!(world.members.includes(world.created_by))) { world.members.push(world.created_by) }
+    // 📰 removing duplicate members in array
+    world.members = [...new Set(world.members)]
 
 
     build_world(world).save()
@@ -64,7 +66,17 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
 
-    worldController.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((result) => {
+
+    const world: IWorld = req.body;
+
+    if (!(world?.members)) {
+        world.members = []
+    }
+    if (!(world.members.includes(world.created_by))) { world.members.push(world.created_by) }
+    // 📰 removing duplicate members in array
+    world.members = [...new Set(world.members)]
+
+    worldController.findByIdAndUpdate(req.params.id, world, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.send(err)
