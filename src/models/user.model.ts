@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import  { Schema,model } from 'mongoose';
 
 
 export interface IUser {
@@ -7,9 +7,9 @@ export interface IUser {
     password: string;
 }
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
 
-    name: { type: String, unique: true, required: true , dropDups: true  },
+    name: { type: String, unique: true, required: true, dropDups: true },
     password: String
 
 });
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
 
 const build_user = (user: IUser) => { return new UserController(user) }
 
-const UserController = mongoose.model("user", userSchema);
+const UserController = model("user", userSchema);
 
 
 
