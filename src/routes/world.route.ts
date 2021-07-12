@@ -16,7 +16,9 @@ router.get('/', (req: Request, res: Response) => {
             res.send(doc)
         })
         .catch(err => {
-            res.send(err)
+            res.statusCode=500;
+            res.send(err);
+        
         })
 
 })
@@ -36,13 +38,14 @@ router.get('/:name', (req: Request, res: Response) => {
 
 router.post('/', (req, res) => {
 
-    if (!req.body) {
-        console.log(chalk.red.inverse('REQUEST BODY WAS UNDEFINED AT POST'));
-        return
-    }
+   
     // var world = { name, password, created_by, members }
     var world: IWorld = req.body;
-    if (!(world?.members?.includes(world.created_by))) { world?.members.push((world.created_by))}
+
+    if (!(world?.members)) {
+        world.members = []
+    }
+    if (!(world.members.includes(world.created_by))) { world.members.push(world.created_by) }
 
 
     build_world(world).save()
@@ -51,6 +54,7 @@ router.post('/', (req, res) => {
             console.log(doc)
         })
         .catch(err => {
+
             res.send(err);
             console.error(err)
         });

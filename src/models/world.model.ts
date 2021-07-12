@@ -14,7 +14,7 @@ const worldSchema = new Schema({
     name: { type: String, unique: true, required: true, dropDups: true },
     password: { type: String, required: true },
     created_by: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-    members: { type: [Schema.Types.ObjectId], ref: 'user', required: true }
+    members: { type: [Schema.Types.ObjectId], validate: (v: Schema.Types.ObjectId) => Array.isArray(v) && v.length > 0, ref: 'user' }
 
 });
 
