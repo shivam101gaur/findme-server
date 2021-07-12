@@ -3,6 +3,7 @@ import { db_connection } from "./connection/db.connect"
 import { userRouter } from "./routes/user.route";
 import chalk from "chalk";
 import cors from "cors"
+import { worldRouter } from "./routes/world.route";
 
 
 db_connection;
@@ -14,10 +15,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRouter)
+app.use('/worlds', worldRouter)
 
 
 app.get('/', (req, res) => {
-    res.send(`<h2><a href="./users">users</a></h2>`)
+     res.send(`
+     <h2>
+     <a href="./users">users</a>
+     <br>
+     <a href="./worlds">worlds</a>
+     </h2>`);
+    
 })
 
 app.get('*', (req, res) => {

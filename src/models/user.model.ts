@@ -1,8 +1,8 @@
-import  { Schema,model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 
 export interface IUser {
-    _id?: number;
+    _id?: Schema.Types.ObjectId;
     name: string;
     password: string;
 }
@@ -10,7 +10,7 @@ export interface IUser {
 const userSchema = new Schema({
 
     name: { type: String, unique: true, required: true, dropDups: true },
-    password: String
+    password: { type: String, required: true }
 
 });
 

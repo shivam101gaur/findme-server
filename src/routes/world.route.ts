@@ -23,6 +23,7 @@ router.get('/', (req: Request, res: Response) => {
 
 //📝 get world with name
 router.get('/:name', (req: Request, res: Response) => {
+
     worldController.find({
         name: req.params.name
     }).then((result) => {
@@ -39,11 +40,14 @@ router.post('/', (req, res) => {
         console.log(chalk.red.inverse('REQUEST BODY WAS UNDEFINED AT POST'));
         return
     }
-    var { name, password, created_by }: IWorld = req.body
+    // var world = { name, password, created_by, members }
+    var world: IWorld = req.body;
+    if (!(world?.members?.includes(world.created_by))) { world?.members.push((world.created_by))}
 
-    build_world({ name, password, created_by }).save()
+
+    build_world(world).save()
         .then(doc => {
-            res.send(doc); 
+            res.send(doc);
             console.log(doc)
         })
         .catch(err => {
@@ -76,4 +80,4 @@ router.delete('/:id', (req, res) => {
 
 
 
-export { router as userRouter }
+export { router as worldRouter }
