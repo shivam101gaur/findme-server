@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
+import { worldController } from "../models/world.model";
 import { build_user, IUser, UserController } from "../models/user.model";
 
 
@@ -64,12 +65,18 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
 
-    UserController.findByIdAndDelete(req.params.id,{new:true}).then((result) => {
-        res.send(result)
+    UserController.findByIdAndRemove(req.params.id,{new:true}).then((user_res) => {
+       
+        worldController.deleteMany({created_by:req.params.id}).then((result) => {
+            res.send(user_res);
+            res.send(result)
+        }).catch((err) => {
+            res.send(err)
+        });
     }).catch((err) => {
-         res.send(`user with id = ${req.params.id} could not be deleted${err}`)
+         res.send(`user with id = ${req.params.id} could not be deleted\n${err}`)
     });
-   
+
 })
 
 
