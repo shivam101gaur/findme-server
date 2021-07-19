@@ -7,8 +7,7 @@ import { build_user, IUser, UserController } from "../models/user.model";
 const router = express.Router();
 
 
-//get all users 
-
+//📄 get all users 
 router.get('/', (req, res) => {
 
     UserController.find()
@@ -18,10 +17,9 @@ router.get('/', (req, res) => {
         .catch(err => {
             res.send(err)
         })
-
 })
 
-//get user with id
+//📃 get user with name
 router.get('/:name', (req, res) => {
     UserController.find({
         name: req.params.name
@@ -33,13 +31,15 @@ router.get('/:name', (req, res) => {
 
 })
 
+
+// 😎 add new user
 router.post('/', (req, res) => {
 
     if (!req.body) {
         console.log(chalk.red.inverse('REQUEST BODY WAS UNDEFINED AT POST'));
         return
     }
-    var { name, password }:IUser = req.body
+    var { name, password }: IUser = req.body
 
     build_user({ name, password }).save()
         .then(doc => {
@@ -54,27 +54,36 @@ router.post('/', (req, res) => {
 
 })
 
+//⚡👺 edit the user
 router.put('/:id', (req, res) => {
 
-    UserController.findByIdAndUpdate(req.params.id,req.body, {new: true}).then((result) => {
+    UserController.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.send(err)
     });
 })
 
+// ❌ delete the user
+// make changes in world 🌎 collection
 router.delete('/:id', (req, res) => {
 
-    UserController.findByIdAndRemove(req.params.id,{new:true}).then((user_res) => {
-       
-        worldController.deleteMany({created_by:req.params.id}).then((result) => {
-            res.send(user_res);
-            res.send(result)
+    UserController.findByIdAndRemove(req.params.id, { new: true }).then((user_res) => {
+
+        worldController.deleteMany({ created_by: req.params.id }).then((wor_del) => {
+
+            worldController.updateMany({ members: req.params.id }, { $pullAll: { members: [req.params.id] } }).then((wor_upd) => {
+                res.send(`${user_res}\n${wor_del}\n${wor_upd}`);
+
+            }).catch((err) => {
+                res.send(err)
+            });
+
         }).catch((err) => {
             res.send(err)
         });
     }).catch((err) => {
-         res.send(`user with id = ${req.params.id} could not be deleted\n${err}`)
+        res.send(`user with id = ${req.params.id} could not be deleted\n${err}`)
     });
 
 })
