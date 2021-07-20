@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
             res.send(doc)
         })
         .catch(err => {
-            res.send(err)
+            res.status(404).send(err)
         })
 })
 
@@ -26,7 +26,7 @@ router.get('/:name', (req, res) => {
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        res.send(err)
+        res.status(404).send(err)
     });
 
 })
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
             console.log(doc)
         })
         .catch(err => {
-            res.send(err);
+            res.status(400).send(err);
             console.error(err)
         });
 
@@ -60,7 +60,7 @@ router.put('/:id', (req, res) => {
     UserController.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        res.send(err)
+        res.status(400).send(err)
     });
 })
 
@@ -76,14 +76,14 @@ router.delete('/:id', (req, res) => {
                 res.send(`${user_res}\n${wor_del}\n${wor_upd}`);
 
             }).catch((err) => {
-                res.send(err)
+                res.status(500).send(err)
             });
 
         }).catch((err) => {
-            res.send(err)
+            res.status(500).send(err)
         });
     }).catch((err) => {
-        res.send(`user with id = ${req.params.id} could not be deleted\n${err}`)
+        res.status(500).send(`user with id = ${req.params.id} could not be deleted\n${err}`)
     });
 
 })
