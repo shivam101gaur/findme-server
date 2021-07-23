@@ -2,10 +2,7 @@ import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { build_world, IWorld, worldController } from "../models/world.model";
 
-
-
 const router = express.Router();
-
 
 // 📝 get all worlds 
 
@@ -16,9 +13,7 @@ router.get('/', (req: Request, res: Response) => {
             res.send(doc)
         })
         .catch(err => {
-            res.statusCode=500;
-            res.send(err);
-        
+            res.status(404).send(err);
         })
 
 })
@@ -31,14 +26,13 @@ router.get('/:name', (req: Request, res: Response) => {
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        res.send(err)
+        res.status(404).send(err)
     });
 
 })
 
 router.post('/', (req, res) => {
 
-   
     // var world = { name, password, created_by, members }
     const world: IWorld = req.body;
 
@@ -46,9 +40,9 @@ router.post('/', (req, res) => {
         world.members = []
     }
     if (!(world.members.includes(world.created_by))) { world.members.push(world.created_by) }
+
     // 📰 removing duplicate members in array
     world.members = [...new Set(world.members)]
-
 
     build_world(world).save()
         .then(doc => {
@@ -56,16 +50,12 @@ router.post('/', (req, res) => {
             console.log(doc)
         })
         .catch(err => {
-
-            res.send(err);
+            res.status(400).send(err);
             console.error(err)
         });
-
-
 })
 
 router.put('/:id', (req, res) => {
-
 
     const world: IWorld = req.body;
 
@@ -79,7 +69,7 @@ router.put('/:id', (req, res) => {
     worldController.findByIdAndUpdate(req.params.id, world, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        res.send(err)
+        res.status(400).send(err)
     });
 })
 
@@ -88,7 +78,7 @@ router.delete('/:id', (req, res) => {
     worldController.findByIdAndDelete(req.params.id, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        res.send(`user with id = ${req.params.id} could not be deleted${err}`)
+        res.status(500).send(`user with id = ${req.params.id} could not be deleted${err}`)
     });
 
 })

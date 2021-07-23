@@ -76,11 +76,11 @@ router.delete('/:id', (req, res) => {
                 res.send(`${user_res}\n${wor_del}\n${wor_upd}`);
 
             }).catch((err) => {
-                res.status(500).send(err)
+                res.status(500).send('User could not be deleted from members of the worlds')
             });
 
         }).catch((err) => {
-            res.status(500).send(err)
+            res.status(500).send('Could not delete world created by this user')
         });
     }).catch((err) => {
         res.status(500).send(`user with id = ${req.params.id} could not be deleted\n${err}`)
