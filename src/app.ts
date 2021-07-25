@@ -28,7 +28,17 @@ app.get('/', (req, res) => {
 
 })
 
-
+app.get('*', (req, res) => {
+    res.status(404).send(`<div style="display:flex;justify-content:center;align-items:center;height:100%;width:100%">
+    <b style="color:red;font-size:5vmin">
+    ROUTE NOT FOUND
+    <br><br>
+    <span  style="color:green;font-size:2.8vmin;text-align:center;">
+    INVALID ROUTE : <a href="${req.url}">${req.url}</a>
+     </span>
+     </b>
+     </div>`)
+});
 
 // 💀 Handling Invalid Routes
 app.all('*', (req, res, next) => {
@@ -41,17 +51,7 @@ app.all('*', (req, res, next) => {
         next(err);
 });
 
-app.get('*', (req, res) => {
-    res.send(`<div style="display:flex;justify-content:center;align-items:center;height:100%;width:100%">
-    <b style="color:red;font-size:5vmin">
-    ROUTE NOT FOUND
-    <br><br>
-    <span  style="color:green;font-size:2.8vmin;text-align:center;">
-    INVALID ROUTE : <a href="${req.url}">${req.url}</a>
-     </span>
-     </b>
-     </div>`)
-});
+
 
 
 //An error handling middleware
