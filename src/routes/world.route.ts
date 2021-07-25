@@ -86,9 +86,10 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
 
-    worldController.findByIdAndDelete(req.params.id, { new: true }).then((result) => {
+    worldController.findByIdAndRemove(req.params.id, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
+        console.log('World Could not be deleted at request',err)
         res.status(500).send(`user with id = ${req.params.id} could not be deleted${err}`)
     });
 
