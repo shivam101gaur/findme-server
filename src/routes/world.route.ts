@@ -2,7 +2,7 @@ import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { build_world, IWorld, worldController } from "../models/world.model";
 
-const router = express.Router();
+const router = express.Router();  
 
 // 📝 get all worlds 
 router.get('/', (req: Request, res: Response) => {
@@ -25,8 +25,7 @@ router.get('/user/:user_id',(req:Request,res:Response)=>{
         res.send(result)
     }).catch((err) => {
         res.status(404).send(err)
-    });
-    
+    }); 
 })
 
 //📝 get world with name
