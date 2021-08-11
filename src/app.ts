@@ -54,7 +54,7 @@ app.all('*', (req, res, next) => {
 
 
 
-//An error handling middleware
+// An error handling middleware
 app.use((err: any, req: Request, res: Response, next: any) => {
 
     err.statusCode = err.statusCode || 500;

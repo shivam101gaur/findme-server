@@ -1,10 +1,11 @@
 import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
+import { Schema } from "mongoose";
 import { build_world, IWorld, worldController } from "../models/world.model";
 
-const router = express.Router();  
+const router = express.Router();
 
-// 📝 get all worlds 
+// 📝 get all worlds
 router.get('/', (req: Request, res: Response) => {
 
     worldController.find()
@@ -17,18 +18,29 @@ router.get('/', (req: Request, res: Response) => {
 
 })
 
-//📝 get all worlds where a user exists in memeber array
-router.get('/user/:user_id',(req:Request,res:Response)=>{
+// 📝❌ get all worlds where a user does not exists in memeber array
+router.get('/notamember/:user_id', (req: Request, res: Response) => {
+    worldController.find({
+        members: { "$ne": req.params.user_id }
+    }).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+        res.status(404).send(err)
+    });
+})
+
+// 📝 get all worlds where a user exists in memeber array
+router.get('/member/:user_id', (req: Request, res: Response) => {
     worldController.find({
         members: req.params.user_id
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(404).send(err)
-    }); 
+    });
 })
 
-//📝 get world with name
+// 📝 get world with name
 router.get('/:name', (req: Request, res: Response) => {
 
     worldController.find({
@@ -65,6 +77,8 @@ router.post('/', (req, res) => {
         });
 })
 
+
+// 📝 update the world by id
 router.put('/:id', (req, res) => {
 
     const world: IWorld = req.body;
@@ -83,12 +97,23 @@ router.put('/:id', (req, res) => {
     });
 })
 
+// 📝 add a member to the world
+router.put('/addmember/:id', (req, res) => {
+
+    const membersToAdd: Schema.Types.ObjectId[] = req.body.members;
+
+    worldController.findByIdAndUpdate(req.params.id, { $addToSet: { members: { $each: membersToAdd } } }, { new: true }).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+        res.status(400).send(err)
+    });
+})
 router.delete('/:id', (req, res) => {
 
     worldController.findByIdAndRemove(req.params.id, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
-        console.log('World Could not be deleted at request',err)
+        console.log('World Could not be deleted at request', err)
         res.status(500).send(`user with id = ${req.params.id} could not be deleted${err}`)
     });
 

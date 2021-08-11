@@ -2,12 +2,13 @@ import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { worldController } from "../models/world.model";
 import { build_user, IUser, UserController } from "../models/user.model";
+import { Schema } from "mongoose";
 
 
 const router = express.Router();
 
 
-//📄 get all users 
+// 📄 get all users
 router.get('/', (req, res) => {
 
     UserController.find()
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
         })
 })
 
-//📃 get user with name
+// 📃 get user with name
 router.get('/:name', (req, res) => {
     UserController.find({
         name: req.params.name
@@ -31,6 +32,21 @@ router.get('/:name', (req, res) => {
 
 })
 
+// 📝 get all users whoose ids exist in array ( member array of a world )
+router.post('/in/list', (req, res) => {
+
+    const members: Schema.Types.ObjectId[] = req.body.members
+
+    UserController.find({
+        _id: { $in: members }
+    }).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+
+        res.status(400).send(err)
+    });
+})
+
 
 // 😎 add new user
 router.post('/', (req, res) => {
@@ -39,7 +55,7 @@ router.post('/', (req, res) => {
         console.log(chalk.red.inverse('REQUEST BODY WAS UNDEFINED AT POST'));
         return
     }
-    var { name, password }: IUser = req.body
+    const { name, password }: IUser = req.body
 
     build_user({ name, password }).save()
         .then(doc => {
@@ -54,7 +70,7 @@ router.post('/', (req, res) => {
 
 })
 
-//⚡👺 edit the user
+// ⚡👺 edit the user
 router.put('/:id', (req, res) => {
 
     UserController.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((result) => {
