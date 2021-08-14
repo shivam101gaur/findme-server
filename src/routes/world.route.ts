@@ -77,7 +77,6 @@ router.post('/', (req, res) => {
         });
 })
 
-
 // 📝 update the world by id
 router.put('/:id', (req, res) => {
 
@@ -108,6 +107,8 @@ router.put('/addmember/:id', (req, res) => {
         res.status(400).send(err)
     });
 })
+
+// 📝 delete a world by id
 router.delete('/:id', (req, res) => {
 
     worldController.findByIdAndRemove(req.params.id, { new: true }).then((result) => {
@@ -118,8 +119,5 @@ router.delete('/:id', (req, res) => {
     });
 
 })
-
-
-
 
 export { router as worldRouter }
