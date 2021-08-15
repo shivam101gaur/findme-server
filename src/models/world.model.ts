@@ -15,10 +15,10 @@ export interface IMessage {
     from: Schema.Types.ObjectId;
     type: 'text';
     timeStamp: Schema.Types.String;
-    content: Schema.Types.String;
+    content: string;
 }
 
-const worldSchema = new Schema({
+const worldSchema = new Schema<IWorld>({
 
     name: { type: String, unique: true, required: true, dropDups: true },
     password: { type: String, required: true },
@@ -29,12 +29,8 @@ const worldSchema = new Schema({
         {
             _id: {
                 type: Schema.Types.ObjectId,
-                index: true,
-                unique: true,
+
                 required: true,
-                
-
-
             },
             from: { type: String, required: [true, "From Id is required in message"] },
             type: { type: String, required: [true, "Age is required"] },
@@ -43,7 +39,7 @@ const worldSchema = new Schema({
         })]
 
 
-    });
+});
 
 
 const build_world = (world: IWorld) => { return new worldController(world) }

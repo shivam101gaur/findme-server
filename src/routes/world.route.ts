@@ -1,7 +1,9 @@
 import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { Schema } from "mongoose";
-import { build_world, IWorld, worldController } from "../models/world.model";
+import { postMessageToWorld } from "../controllers/chat.controller";
+import { build_world, IMessage, IWorld, worldController } from "../models/world.model";
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -53,9 +55,10 @@ router.get('/:name', (req: Request, res: Response) => {
 
 })
 
+
+// 📝 creating a new world
 router.post('/', (req, res) => {
 
-    // var world = { name, password, created_by, members }
     const world: IWorld = req.body;
 
     if (!(world?.members)) {
@@ -75,6 +78,19 @@ router.post('/', (req, res) => {
             res.status(400).send(err);
             console.error(err)
         });
+})
+
+// 📝⚡ post a message to world by world id
+router.post('/postmessage/:wid', (req, res) => {
+    var a;
+    postMessageToWorld(req.params.wid, req.body).then((result) => {
+        console.log(result);
+        res.status(200).send(result)
+    }).catch((err) => {
+        console.log(chalk.red(err.message));
+        res.status((Number(err.name))??500).send(err.message)
+
+    });
 })
 
 // 📝 update the world by id
@@ -121,3 +137,5 @@ router.delete('/:id', (req, res) => {
 })
 
 export { router as worldRouter }
+
+

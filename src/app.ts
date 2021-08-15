@@ -4,8 +4,8 @@ import { userRouter } from "./routes/user.route";
 import chalk from "chalk";
 import cors from "cors"
 import { worldRouter } from "./routes/world.route";
-import { postMessageToWorld } from "./controllers/world.controller";
-
+import { postMessageToWorld } from "./controllers/chat.controller";
+import mongoose from 'mongoose';
 
 
 db_connection;
@@ -19,6 +19,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/users', userRouter)
 app.use('/worlds', worldRouter)
 
+// #region Testing code FIXME ⚡ Only for testing , review when not required ⚡
+
+app.get('/test/:param1?/:param2?', (req, res) => {
+
+    const generatedId1 = mongoose.Types.ObjectId()
+    const generatedId2 = mongoose.Types.ObjectId()
+    const generatedId3 = mongoose.Types.ObjectId()
+    console.log({ generatedId1, generatedId2, generatedId3 });
+    res.json({ generatedId1, generatedId2, generatedId3 })
+
+    // res.send('\nReceeived param1 : \n' + req.params.param1 + '\nReceeived param2 : \n' + req.params.param2)
+})
+// app.get('/sms/:wid/:frm/:mes/', (req, res) => {
+
+//     postMessageToWorld(req.params.wid, req.params.frm, req.params.mes)
+
+
+//     res.send(' Sending a Message : \n' + req.params.mes)
+// })
+// #endregion
+
 
 app.get('/', (req, res) => {
     res.send(`
@@ -29,13 +50,7 @@ app.get('/', (req, res) => {
      </h2>`);
 
 })
-// FIXME ⚡ ONly for testing , review when not required ⚡
-app.get('/sms/:wid/:frm/:mes/', (req, res) => {
 
-    postMessageToWorld(req.params.wid,req.params.frm,req.params.mes)
-
-    res.send( ' Sending a Message : \n'+req.params.mes  )
-})
 
 app.get('*', (req, res) => {
     res.status(404).send(`<div style="display:flex;justify-content:center;align-items:center;height:100%;width:100%">
