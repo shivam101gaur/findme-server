@@ -18,28 +18,28 @@ export interface IMessage {
     content: string;
 }
 
+const messageSchema = new Schema<IMessage>({
+
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
+    from: { type: Schema.Types.ObjectId, required: [true, "From Id is required in message"] },
+    type: { type: String, required: [true, "Age is required"] },
+    timeStamp: { type: String, required: [true, "Timestamp is required"] },
+    content: { type: String, required: [true, "message content is required"] }
+} )
+
+
 const worldSchema = new Schema<IWorld>({
 
     name: { type: String, unique: true, required: true, dropDups: true },
     password: { type: String, required: true },
     created_by: { type: Schema.Types.ObjectId, ref: 'user', required: true },
     members: { type: [Schema.Types.ObjectId], validate: (v: Schema.Types.ObjectId) => Array.isArray(v) && v.length > 0, ref: 'user' },
-    chat: [new Schema(
-
-        {
-            _id: {
-                type: Schema.Types.ObjectId,
-
-                required: true,
-            },
-            from: { type: String, required: [true, "From Id is required in message"] },
-            type: { type: String, required: [true, "Age is required"] },
-            timeStamp: { type: String, required: [true, "Contact is required"] },
-            content: { type: String, required: [true, "Contact is required"] }
-        })]
-
-
+    chat: { type: [messageSchema] }
 });
+
 
 
 const build_world = (world: IWorld) => { return new worldController(world) }
