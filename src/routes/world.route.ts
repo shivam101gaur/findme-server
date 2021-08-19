@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { Schema } from "mongoose";
-import { findMessageById, postMessageToWorld } from "../controllers/chat.controller";
+import { deleteMessageById, postMessageToWorld } from "../controllers/chat.controller";
 import { build_world, IMessage, IWorld, worldController } from "../models/world.model";
 import mongoose from 'mongoose';
 
@@ -82,26 +82,25 @@ router.post('/', (req, res) => {
 
 // 📝⚡ post a message to world by world id
 router.post('/postmessage/:wid', (req, res) => {
-    var a;
     postMessageToWorld(req.params.wid, req.body).then((result) => {
         console.log(result);
         res.status(200).send(result)
     }).catch((err) => {
         console.log(chalk.red(err.message));
-        res.status((Number(err.name))??500).send(err.message)
+        res.status((Number(err.name)) ?? 500).send(err.message)
 
     });
 })
 
-// 📝⚡ get a message by id
-router.get('/message/:mid', (req, res) => {
-    var a;
-    findMessageById(req.params.mid).then((result) => {
+// 📝⚡ delete a message by id
+router.delete('/message/:wid/:mid', (req, res) => {
+
+    deleteMessageById(req.params.wid, req.params.mid).then((result) => {
         console.log(result);
         res.status(200).send(result)
     }).catch((err) => {
         console.log(chalk.red(err.message));
-        res.status((Number(err.name))??500).send(err.message)
+        res.status((Number(err.name)) ?? 500).send(err.message)
 
     });
 })

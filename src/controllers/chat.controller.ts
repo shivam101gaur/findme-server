@@ -46,7 +46,8 @@ export async function postMessageToWorld(toWorldId: string | Schema.Types.Object
 
 }
 
-export async function findMessageById(mid: string | Schema.Types.ObjectId) {
+
+export async function deleteMessageById(wid: string | Schema.Types.ObjectId,mid: string | Schema.Types.ObjectId) {
 
     // 📝 Validating parameters 
     if (!isValidObjectId(mid)) {
@@ -57,11 +58,20 @@ export async function findMessageById(mid: string | Schema.Types.ObjectId) {
 
         return Promise.reject(err)
     }
+    // 📝 Validating parameters 
+    if (!isValidObjectId(wid)) {
+
+        const err = new Error()
+        err.name = "400"
+        err.message = 'INVALID world ID'
+
+        return Promise.reject(err)
+    }
 
 
     // 📝 finding the world and updating it, by pushing new message to it in chat array
-    return await worldController.find(
-        { "chat._id":mid  }
+    return await worldController.findOneAndUpdate(
+        { _id: wid }, { "$pull": { "chat": { "_id": mid } }}, { multi:true,new:true },
     )
 
 
