@@ -1,15 +1,24 @@
-import express, { Router, Response, Request } from "express";
+import express, { Response, Request } from "express";
 import { db_connection } from "./connection/db.connect"
 import { userRouter } from "./routes/user.route";
 import chalk from "chalk";
 import cors from "cors"
 import { worldRouter } from "./routes/world.route";
-import { postMessageToWorld } from "./controllers/chat.controller";
 import mongoose from 'mongoose';
+
+import { Server as HttpServer }  from "http"
+import { startSocketConnection } from "./connection/socket.connect";
 
 
 db_connection;
 const app = express();
+const httpServer = new HttpServer(app)
+startSocketConnection(httpServer)
+// let http = require("http").Server(app);
+// let io = require("socket.io")(http);
+
+
+
 app.use(cors());
 
 // middleware
@@ -18,27 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRouter)
 app.use('/worlds', worldRouter)
-
-// #region Testing code FIXME ⚡ Only for testing , review when not required ⚡
-
-app.get('/test/:param1?/:param2?', (req, res) => {
-
-    const generatedId1 = mongoose.Types.ObjectId()
-    const generatedId2 = mongoose.Types.ObjectId()
-    const generatedId3 = mongoose.Types.ObjectId()
-    console.log({ generatedId1, generatedId2, generatedId3 });
-    res.json({ generatedId1, generatedId2, generatedId3 })
-
-    // res.send('\nReceeived param1 : \n' + req.params.param1 + '\nReceeived param2 : \n' + req.params.param2)
-})
-// app.get('/sms/:wid/:frm/:mes/', (req, res) => {
-
-//     postMessageToWorld(req.params.wid, req.params.frm, req.params.mes)
-
-
-//     res.send(' Sending a Message : \n' + req.params.mes)
-// })
-// #endregion
 
 
 app.get('/', (req, res) => {
@@ -90,6 +78,23 @@ app.use((err: any, req: Request, res: Response, next: any) => {
     });
 });
 
-app.listen(3000, () => {
+
+// #region Testing code FIXME ⚡ Only for testing , review when not required ⚡
+
+app.get('/test/:param1?/:param2?', (req, res) => {
+
+    const generatedId1 = mongoose.Types.ObjectId()
+    const generatedId2 = mongoose.Types.ObjectId()
+    const generatedId3 = mongoose.Types.ObjectId()
+    console.log({ generatedId1, generatedId2, generatedId3 });
+    res.json({ generatedId1, generatedId2, generatedId3 })
+
+    // res.send('\nReceeived param1 : \n' + req.params.param1 + '\nReceeived param2 : \n' + req.params.param2)
+})
+
+// #endregion
+
+
+httpServer.listen(3000, () => {
     console.log(chalk.blue.italic('\n\tapp started listening on http://localhost:3000'))
 });
