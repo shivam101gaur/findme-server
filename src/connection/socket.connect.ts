@@ -10,6 +10,9 @@ export function startSocketConnection(_httpServer: HttpServer) {
         
         socket.on('sendMessage',(message)=>{
             console.log(message)
+            socket.emit("receiveMessage",{
+                content:'hello from backend'
+            })
         })
 
     });
