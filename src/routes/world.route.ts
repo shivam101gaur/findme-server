@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { Schema } from "mongoose";
-import { deleteMessageById, postMessageToWorld } from "../controllers/chat.controller";
+import { deleteMessageById, addMessageToWorld } from "../controllers/chat.controller";
 import { build_world, IMessage, IWorld, worldController } from "../models/world.model";
 import mongoose from 'mongoose';
 
@@ -82,7 +82,7 @@ router.post('/', (req, res) => {
 
 // 📝⚡ post a message to world by world id
 router.post('/postmessage/:wid', (req, res) => {
-    postMessageToWorld(req.params.wid, req.body).then((result) => {
+    addMessageToWorld(req.params.wid, req.body).then((result) => {
         console.log(result);
         res.status(200).send(result)
     }).catch((err) => {

@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 
 
 
-export async function postMessageToWorld(toWorldId: string | Schema.Types.ObjectId, message: IMessage) {
+export async function addMessageToWorld(toWorldId: string | Schema.Types.ObjectId, message: IMessage) {
 
     // 📝 Validating parameters 
     if (!message.content || !isValidObjectId(message.from) || !isValidObjectId(toWorldId)) {

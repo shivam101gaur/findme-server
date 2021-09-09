@@ -1,5 +1,6 @@
 import { Server as HttpServer } from "http"
 import { Server, Socket } from "socket.io";
+import { addMessageToWorld } from "../controllers/chat.controller";
 
 
 export function startSocketConnection(_httpServer: HttpServer) {
@@ -8,10 +9,11 @@ export function startSocketConnection(_httpServer: HttpServer) {
 
         console.log('User has connected');
         
-        socket.on('sendMessage',(message)=>{
-            console.log(message)
-            socket.emit("receiveMessage",{
-                content:'hello from backend'
+        socket.on('msgfromuser',(letter)=>{
+            console.log(letter.message)
+            addMessageToWorld(letter.worldId,letter.message)
+            socket.emit("msgfromserver",{
+                content:'hello from backend to = > '+letter.worldId
             })
         })
 
