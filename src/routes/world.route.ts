@@ -45,7 +45,7 @@ router.get('/member/:user_id', (req: Request, res: Response) => {
 // 📝 get world with name
 router.get('/:name', (req: Request, res: Response) => {
 
-    worldController.find({
+    worldController.findOne({
         name: req.params.name
     }).then((result) => {
         res.send(result)
