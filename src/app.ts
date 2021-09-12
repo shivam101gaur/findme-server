@@ -32,9 +32,9 @@ app.use('/worlds', worldRouter)
 app.get('/', (req, res) => {
     res.send(`
      <h2>
-     <a href="./users">users</a>
+     <a href="./users">View Users</a>
      <br>
-     <a href="./worlds">worlds</a>
+     <a href="./worlds">View Worlds</a>
      </h2>`);
 
 })
