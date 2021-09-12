@@ -9,7 +9,7 @@
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy":"gcloud app deploy",
-    "postdeploy":"gcloud app browse gcloud app logs tail"
+    "postdeploy":"gcloud app browse && gcloud app logs tail"
   },
   "keywords": [],
   "author": "",
