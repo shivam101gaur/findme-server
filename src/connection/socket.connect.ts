@@ -1,12 +1,12 @@
 import chalk from "chalk";
 import { Server as HttpServer } from "http"
 import { Server, Socket } from "socket.io";
-import { IWorld } from "../models/world.model";
 import { addMessageToWorld } from "../controllers/chat.controller";
 
 
 export function startSocketConnection(_httpServer: HttpServer) {
     const io = new Server(_httpServer)
+   
     io.on("connection", (socket: Socket) => {
         
         console.log(chalk.blue.bold('\nSocket has connected ✅'));
