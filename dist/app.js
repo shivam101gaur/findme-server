@@ -27,9 +27,9 @@ app.use('/worlds', world_route_1.worldRouter);
 app.get('/', (req, res) => {
     res.send(`
      <h2>
-     <a href="./users">users</a>
+     <a href="./users">View Users</a>
      <br>
-     <a href="./worlds">worlds</a>
+     <a href="./worlds">View Worlds</a>
      </h2>`);
 });
 app.get('*', (req, res) => {
@@ -72,6 +72,6 @@ app.get('/test/:param1?/:param2?', (req, res) => {
 });
 // #endregion
 httpServer.listen(8080, () => {
-    console.log(chalk_1.default.blue.italic('\n\tapp started listening on http://localhost:8080'));
+    console.log(chalk_1.default.blue.italic('\n\tapp started listening on https://findme-server-325808.el.r.appspot.com'));
 });
 //# sourceMappingURL=app.js.map
