@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import express, { Router, Response, Request } from "express";
 import { Schema } from "mongoose";
-import { deleteMessageById, addMessageToWorld } from "../controllers/chat.controller";
+import { deleteMessageById, addMessageToWorld, isValidObjectId } from "../controllers/chat.controller";
 import { build_world, IMessage, IWorld, worldController } from "../models/world.model";
 import mongoose from 'mongoose';
 
@@ -134,6 +134,20 @@ router.put('/addmember/:id', (req, res) => {
     }).catch((err) => {
         res.status(400).send(err)
     });
+})
+// 📝 remove a member from the world
+router.delete('/removemember/:wid/:uid', (req, res) => {
+if(isValidObjectId(req.params.wid)&&isValidObjectId(req.params.uid)){
+      worldController.findByIdAndUpdate(req.params.wid, { $pull: { members: { '_id': req.params.uid } } }, { new: true }).then((result) => {
+        res.send(result)
+    }).catch((err) => {
+        res.status(500).send(err)
+    });
+}
+else{
+    res.status(400).send('Invalid world Id or User Id!\ncannot remove user from world')
+}
+  
 })
 
 // 📝 delete a world by id

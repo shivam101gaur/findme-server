@@ -119,6 +119,19 @@ router.put('/addmember/:id', (req, res) => {
         res.status(400).send(err);
     });
 });
+// 📝 remove a member from the world
+router.delete('/removemember/:wid/:uid', (req, res) => {
+    if (chat_controller_1.isValidObjectId(req.params.wid) && chat_controller_1.isValidObjectId(req.params.uid)) {
+        world_model_1.worldController.findByIdAndUpdate(req.params.wid, { $pull: { members: { '_id': req.params.uid } } }, { new: true }).then((result) => {
+            res.send(result);
+        }).catch((err) => {
+            res.status(500).send(err);
+        });
+    }
+    else {
+        res.status(400).send('Invalid world Id or User Id!\ncannot remove user from world');
+    }
+});
 // 📝 delete a world by id
 router.delete('/:id', (req, res) => {
     world_model_1.worldController.findByIdAndRemove(req.params.id, { new: true }).then((result) => {

@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "predeploy": "npm run build",
-    "deploy":"gcloud app deploy",
-    "postdeploy":"gcloud app browse && gcloud app logs tail"
+    "deploy": "gcloud app deploy",
+    "postdeploy": "gcloud app browse && gcloud app logs tail"
   },
   "keywords": [],
   "author": "",
