@@ -138,7 +138,7 @@ router.put('/addmember/:id', (req, res) => {
 // 📝 remove a member from the world
 router.delete('/removemember/:wid/:uid', (req, res) => {
 if(isValidObjectId(req.params.wid)&&isValidObjectId(req.params.uid)){
-      worldController.findByIdAndUpdate(req.params.wid, { $pull: { members: { '_id': req.params.uid } } }, { new: true }).then((result) => {
+      worldController.findByIdAndUpdate(req.params.wid, { $pull: { members:  req.params.uid  } }, { new: true }).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send(err)
