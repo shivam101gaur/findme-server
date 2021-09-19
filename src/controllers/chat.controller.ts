@@ -47,7 +47,7 @@ export async function addMessageToWorld(toWorldId: string | Schema.Types.ObjectI
 }
 
 
-export async function deleteMessageById(wid: string | Schema.Types.ObjectId,mid: string | Schema.Types.ObjectId) {
+export async function   deleteMessageById(wid: string | Schema.Types.ObjectId,mid: string | Schema.Types.ObjectId) {
 
     // 📝 Validating parameters 
     if (!isValidObjectId(mid)) {
