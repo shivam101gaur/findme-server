@@ -4,19 +4,13 @@ import { userRouter } from "./routes/user.route";
 import chalk from "chalk";
 import cors from "cors"
 import { worldRouter } from "./routes/world.route";
-import mongoose from 'mongoose';
-
 import { Server as HttpServer } from "http"
 import { startSocketConnection } from "./connection/socket.connect";
-
 
 db_connection;
 const app = express();
 const httpServer = new HttpServer(app)
 startSocketConnection(httpServer)
-// let http = require("http").Server(app);
-// let io = require("socket.io")(http);
-
 
 var allowedOrigins = ['https://find-me0.web.app/'];
 app.use(cors({
@@ -76,8 +70,6 @@ app.all('*', (req, res, next) => {
 });
 
 
-
-
 // An error handling middleware
 app.use((err: any, req: Request, res: Response, next: any) => {
 
@@ -89,22 +81,6 @@ app.use((err: any, req: Request, res: Response, next: any) => {
         message: err.message
     });
 });
-
-
-// #region Testing code FIXME ⚡ Only for testing , review when not required ⚡
-
-app.get('/test/:param1?/:param2?', (req, res) => {
-
-    const generatedId1 = mongoose.Types.ObjectId()
-    const generatedId2 = mongoose.Types.ObjectId()
-    const generatedId3 = mongoose.Types.ObjectId()
-    console.log({ generatedId1, generatedId2, generatedId3 });
-    res.json({ generatedId1, generatedId2, generatedId3 })
-
-    // res.send('\nReceeived param1 : \n' + req.params.param1 + '\nReceeived param2 : \n' + req.params.param2)
-})
-
-// #endregion
 
 
 httpServer.listen(8080, () => {
