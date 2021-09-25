@@ -18,12 +18,12 @@ startSocketConnection(httpServer)
 // let io = require("socket.io")(http);
 
 
-var allowedOrigins = ['http://localhost:8100','https://find-me0.web.app/'];
+var allowedOrigins = ['https://find-me0.web.app/'];
 app.use(cors({
     origin: function (origin, callback) {
         // allow requests with no origin 
         // (like mobile apps or curl requests)
-        // if (!origin) return callback(null, true);
+        if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
             var msg = 'The CORS policy for this site does not ' +
                 'allow access from the specified Origin.';
