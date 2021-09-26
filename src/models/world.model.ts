@@ -34,7 +34,7 @@ const messageSchema = new Schema<IMessage>({
 const worldSchema = new Schema<IWorld>({
 
     name: { type: String, unique: true, required: true, dropDups: true },
-    password: { type: String, required: true },
+    password: { type: String },
     created_by: { type: Schema.Types.ObjectId, ref: 'user', required: true },
     members: { type: [Schema.Types.ObjectId], validate: (v: Schema.Types.ObjectId) => Array.isArray(v) && v.length > 0, ref: 'user' },
     chat: { type: [messageSchema] }
