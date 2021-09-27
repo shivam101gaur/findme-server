@@ -18,7 +18,7 @@ and is currently running on Google Cloud App Engine.
 
   
 ## Deployment
- To deploy this project run
+ To run this project on local machine
  
 ```bash
   nodemon
