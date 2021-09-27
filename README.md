@@ -3,7 +3,8 @@
 
 This server code serves all the back-end services for  
 [**FIND-ME**](https://find-me0.web.app) 
-App running on Google Cloud App Engine.
+App
+and is currently running on Google Cloud App Engine.
 
 ![App Screenshot](src/assets/screen-shots/serverstarted.png)
 
